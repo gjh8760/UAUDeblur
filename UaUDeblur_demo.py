@@ -79,7 +79,7 @@ class DeepResPrior(object):
         self.o = torch.zeros(1, 1, self.res_input.shape[2], self.res_input.shape[3]).type(self.dtype)
         # w_input = np_to_torch(w).type(dtype)
         # w_input = w_input.unsqueeze(0)
-        self.img_outt_torch = np_to_torch(self.imgfblur_np).unsqueeze(0).type(self.dtype)
+        self.img_out_torch = np_to_torch(self.imgfblur_np).unsqueeze(0).type(self.dtype)
         self.image_net = skip(self.input_depth, 1,
                     num_channels_down = [8, 16, 32, 64, 128],
                     num_channels_up   = [8, 16, 32, 64, 128],
