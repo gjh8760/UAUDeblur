@@ -153,7 +153,8 @@ class DeepResPrior(object):
             self.x_temp = self.img_out_torch.detach()
         self.img_out_torch = self.image_net(self.img_input)
         self.w = self.residual_net(self.res_input)
-        self.img_est_torch = torch.real(torch.fft.irfft2(torch.fft.rfft2(self.img_out_torch) * self.PSF))
+        # self.img_est_torch = torch.real(torch.fft.irfft2(torch.fft.rfft2(self.img_out_torch) * self.PSF))
+        self.img_est_torch = torch.real(torch.fft.ifft2(torch.fft.fft2(self.img_out_torch) * self.PSF))
 
         #
         if step > 0:
@@ -192,7 +193,7 @@ class DeepResPrior(object):
         self.current_result_av = Result(recon=self.out_avg, psnr=self.psnr_av)
         if self.best_result is None or self.best_result.psnr < self.current_result.psnr:
             self.best_result = self.current_result
-            self.best_ssim = ssim(self.img_clean_np, self.img_out_np)
+            self.best_ssim = compare_ssim(self.img_clean_np, self.img_out_np)
             self.res_out_np = torch_to_np(self.s).squeeze()
             self.img_est_np = torch_to_np(self.img_est_torch).squeeze()
             scio.savemat('./output/img_art.mat', {'h': self.res_out_np})
